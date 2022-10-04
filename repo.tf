@@ -37,6 +37,7 @@ resource "kubernetes_secret" "org_cred" {
 }
 
 resource "kubernetes_secret" "repos" {
+  depends_on = [helm_release.argocd]
   for_each = local.repos
 
   metadata {
