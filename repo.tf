@@ -12,7 +12,7 @@ resource "tls_private_key" "rsa_4096" {
 
 resource "github_repository_deploy_key" "deploy_keys" {
   for_each   = local.repos
-  title      = "${each.key}-${one(each.value)}"
+  title      = var.project
   repository = "${one(each.value)}/${each.key}"
   key        = tls_private_key.rsa_4096[one(each.value)].public_key_openssh
   read_only  = "true"
