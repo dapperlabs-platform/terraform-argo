@@ -27,3 +27,33 @@ module "argo" {
   }
 }
 ```
+
+## Okta API-Keys
+
+- Setup Okta OIDC API-keys with IT
+- Create a GSM secret version with the keys in json structure:
+
+```hcl
+resource "google_secret_manager_secret_version" "latest" {
+  secret = google_secret_manager_secret.okta_api.id
+  secret_data = jsonencode({
+    client_id     = "client_id"
+    client_secret = "client_secret"
+  })
+}
+```
+
+## Github API-key
+
+- This module relies on `atlantis` envars for Github access.
+
+```
+provider "github" {
+  # owner = GITHUB_OWNER environment variable
+  # token = GITHUB_TOKEN environment variable
+}
+```
+
+## Helm chart location
+
+- This module assumes your local helm-chart setup for templating the release, see [sre-infra-example](https://github.com/dapperlabs/dapperlabs-sre-infrastructure/tree/main/k8s/sre/argo/helm)
