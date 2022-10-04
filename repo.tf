@@ -19,6 +19,8 @@ resource "github_repository_deploy_key" "deploy_keys" {
 }
 
 resource "kubernetes_secret" "org_cred" {
+  depends_on = [helm_release.argocd]
+
   for_each = { for repo in var.git_repos : repo.org => repo.org }
 
   metadata {
@@ -38,6 +40,7 @@ resource "kubernetes_secret" "org_cred" {
 
 resource "kubernetes_secret" "repos" {
   depends_on = [helm_release.argocd]
+
   for_each = local.repos
 
   metadata {
